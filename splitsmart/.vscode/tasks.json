@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Format Java (project style)",
+      "type": "shell",
+      "command": "./mvnw",
+      "args": ["spotless:apply"],
+      "windows": {
+        "command": "mvnw.cmd"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Format frontend and docs",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "format"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Format Java and frontend",
+      "dependsOn": ["Format Java (project style)", "Format frontend and docs"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}

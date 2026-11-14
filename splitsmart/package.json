@@ -1,0 +1,11 @@
+{
+  "name": "splitsmart-formatting",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"src/main/resources/static/**/*.{html,css,js}\" \"*.md\" \"*.json\" \".vscode/*.json\"",
+    "format:check": "prettier --check \"src/main/resources/static/**/*.{html,css,js}\" \"*.md\" \"*.json\" \".vscode/*.json\""
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SplitSmart — Good times. Clear balances.</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/"
+        >↗ <span>split<span class="mint">smart</span></span></a
+      ><span class="tag">LESS MATH. MORE MEMORIES.</span>
+      <div id="accountBar" hidden>
+        <span id="accountName"></span><button id="refreshAccount">Refresh</button
+        ><button id="logout">Log out</button><button id="demo">Load trip demo ↗</button>
+      </div>
+    </header>
+    <section id="authScreen" class="auth-screen">
+      <div class="auth-intro">
+        <p class="eyebrow">YOUR PEOPLE. YOUR PLANS.</p>
+        <h1>Shared moments.<br /><span class="mint">Your own space.</span></h1>
+        <p class="subtitle">
+          Sign in to your groups, add friends, and keep every shared expense clear.
+        </p>
+      </div>
+      <div class="panel auth-card">
+        <div class="auth-tabs">
+          <button id="loginTab" class="dark" type="button">Sign in</button
+          ><button id="registerTab" type="button">Create account</button>
+        </div>
+        <h2 id="authTitle">Welcome back.</h2>
+        <form id="authForm">
+          <label
+            >Username<input
+              id="authUsername"
+              name="username"
+              autocomplete="username"
+              pattern="[a-z0-9_]{3,30}"
+              minlength="3"
+              maxlength="30"
+              placeholder="e.g. aswanth"
+              required /></label
+          ><label id="displayNameField" hidden
+            >Display name<input name="displayName" autocomplete="nickname" maxlength="80" /></label
+          ><label
+            >Password<input
+              name="password"
+              id="authPassword"
+              type="password"
+              autocomplete="current-password"
+              minlength="8"
+              maxlength="72"
+              required
+          /></label>
+          <p id="registerNote" class="muted small" hidden>
+            Use 3–30 lowercase letters, numbers, or underscores for your username. The first account
+            receives any groups saved before accounts were added.
+          </p>
+          <p id="authError" role="alert"></p>
+          <button class="green full" id="authSubmit">Sign in ↗</button>
+        </form>
+        <p class="muted small">
+          Payments are simulations. No payment-provider registration is needed.
+        </p>
+      </div>
+    </section>
+    <main id="appMain" hidden>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <section id="groupsHome">
+        <div class="groups-heading">
+          <div>
+            <p class="eyebrow">YOUR SHARED SPACES</p>
+            <h1>Your groups<span class="mint">.</span></h1>
+            <p class="subtitle">
+              Trips, roommates, and everything in between.<br />Pick a group to see its expenses and
+              settle up.
+            </p>
+          </div>
+          <div class="home-symbol" aria-hidden="true">✳</div>
+        </div>
+        <section class="panel new-group-panel">
+          <div>
+            <h2>Start something together.</h2>
+            <p class="muted small">Create a group, then add your people.</p>
+          </div>
+          <form id="groupForm" class="inline">
+            <label class="sr" for="groupName">New group name</label
+            ><input
+              id="groupName"
+              name="name"
+              placeholder="Name your next shared adventure"
+              maxlength="80"
+              required
+            /><button class="dark">+ New group</button>
+          </form>
+        </section>
+        <div class="group-list-heading">
+          <h2>All groups</h2>
+          <span id="groupTotal" class="muted"></span>
+        </div>
+        <div id="groupCards" class="group-cards"></div>
+        <section id="invitationPanel" class="panel inbox" hidden>
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">YOUR INVITATIONS</p>
+              <h2>Join your people.</h2>
+            </div>
+            <button id="refreshInvites">Refresh invitations</button>
+          </div>
+          <div id="invitations"></div>
+        </section>
+      </section>
+      <section id="groupPage" hidden>
+        <a href="/" id="backToGroups" class="back-link">← All groups</a>
+        <section class="workspace-heading">
+          <p class="eyebrow">YOUR GROUP WORKSPACE</p>
+          <h1 id="groupPageTitle" tabindex="-1"></h1>
+          <p class="subtitle">Shared expenses, clear splits, and every repayment in one place.</p>
+        </section>
+        <section class="stats" aria-label="Trip summary">
+          <div><span>Total spent</span><strong id="total">₹0.00</strong></div>
+          <div><span>The crew</span><strong id="count">0 friends</strong></div>
+          <div><span>Suggested repayments</span><strong id="transfers">0 transfers</strong></div>
+        </section>
+        <div class="layout">
+          <div>
+            <section class="panel">
+              <div class="section-title">
+                <div>
+                  <p class="eyebrow">01 / THE PEOPLE</p>
+                  <h2>Bring your crew</h2>
+                </div>
+                <span class="pill">Fair splits, your way</span>
+              </div>
+              <div id="crew" class="crew"></div>
+              <p id="memberHint" class="muted small"></p>
+              <form id="memberForm" class="inline">
+                <div class="user-search">
+                  <label class="sr" for="friend">Search registered people</label
+                  ><input
+                    id="friend"
+                    placeholder="Search by name or username"
+                    maxlength="80"
+                    autocomplete="off"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                    aria-controls="userResults"
+                  />
+                  <div
+                    id="userResults"
+                    class="user-results"
+                    role="listbox"
+                    aria-label="Available people"
+                    hidden
+                  ></div>
+                  <span id="userSearchStatus" class="sr" role="status" aria-live="polite"></span>
+                </div>
+                <button id="addMemberButton" class="dark" disabled>Add member +</button>
+              </form>
+            </section>
+            <section class="panel">
+              <div class="section-title">
+                <div>
+                  <p class="eyebrow">02 / THE MEMORIES</p>
+                  <h2>Every little expense</h2>
+                </div>
+                <button id="addExpense" class="green">+ Add expense</button>
+              </div>
+              <div id="expenses"></div>
+              <button id="showMore" type="button" class="full" hidden>Show 30 more expenses</button>
+            </section>
+          </div>
+          <aside>
+            <section class="panel settlement">
+              <p class="eyebrow">03 / THE CLEAN SLATE</p>
+              <h2>Settle up, simply.</h2>
+              <p class="muted">Suggested payments that bring everyone’s balance back to zero.</p>
+              <p id="paymentMode" class="payment-mode"></p>
+              <div id="settlements"></div>
+              <div class="note">✦ More memories. Fewer money messages.</div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">DEMO PAYMENT HISTORY</p>
+              <h2>Recorded repayments</h2>
+              <p class="muted small">
+                Successful simulations update balances. No real money is sent to friends.
+              </p>
+              <div id="paymentHistory"></div>
+            </section>
+            <section class="panel resolution">
+              <p class="eyebrow">THE MATHS, MADE CLEAR</p>
+              <h2>How it’s resolved</h2>
+              <p class="muted small">
+                Follow the original debts, their net amounts, and the final group repayment plan.
+              </p>
+              <label>See the breakdown for<select id="resolutionPerson"></select></label>
+              <div id="resolution"></div>
+            </section>
+            <section class="panel">
+              <h3>Everyone’s balance</h3>
+              <div id="balances"></div>
+              <p class="muted small">Positive = gets back · Negative = owes</p>
+            </section>
+          </aside>
+        </div>
+        <footer>
+          <span>Built with Java. Made for real life.</span
+          ><button id="reset" class="text-button">Clear this group</button>
+        </footer>
+      </section>
+    </main>
+    <dialog id="expenseDialog">
+      <form id="expenseForm">
+        <div class="section-title">
+          <h2>Add a memory.</h2>
+          <button type="button" id="closeDialog" aria-label="Close">✕</button>
+        </div>
+        <label
+          >What was it for?<input
+            name="title"
+            placeholder="Dinner, a stay, or something fun"
+            maxlength="80"
+            required
+        /></label>
+        <div class="form-row">
+          <label
+            >Amount (INR)<input
+              name="amount"
+              type="number"
+              min="0.01"
+              max="1000000"
+              step="0.01"
+              placeholder="0.00"
+              required /></label
+          ><label>Paid by<select name="payer" id="payer" required></select></label>
+        </div>
+        <label
+          >Split method<select name="mode" id="splitMode">
+            <option value="equal">Equally</option>
+            <option value="exact">Exact amounts (₹)</option>
+            <option value="percentage">Percentages (%)</option>
+          </select></label
+        >
+        <fieldset>
+          <legend>Split between</legend>
+          <div id="participants" class="checks"></div>
+        </fieldset>
+        <div id="customShares"></div>
+        <p id="splitSummary" class="muted small" aria-live="polite"></p>
+        <p id="formError" role="alert"></p>
+        <button class="green full">Save expense ↗</button>
+      </form>
+    </dialog>
+    <dialog id="demoPaymentDialog" aria-labelledby="demoPaymentTitle">
+      <div class="section-title">
+        <h2 id="demoPaymentTitle">Demo payment</h2>
+        <button type="button" id="closeDemoPayment" aria-label="Cancel demo payment">✕</button>
+      </div>
+      <p class="payment-mode">SIMULATION ONLY · NO REAL MONEY</p>
+      <p id="demoPaymentParties"></p>
+      <strong id="demoPaymentAmount" class="demo-amount"></strong>
+      <p class="muted">
+        Choose an outcome to see how SplitSmart handles a payment. No card, UPI, or payment-provider
+        account is needed.
+      </p>
+      <p id="demoPaymentError" role="alert"></p>
+      <div class="demo-actions">
+        <button type="button" class="green" data-demo-outcome="success">Simulate success ↗</button
+        ><button type="button" data-demo-outcome="failed">Simulate failure</button
+        ><button type="button" data-demo-outcome="cancelled">Cancel payment</button>
+      </div>
+    </dialog>
+  </body>
+</html>

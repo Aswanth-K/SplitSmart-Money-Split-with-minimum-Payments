@@ -1,0 +1,61 @@
+# Local database, accounts, expenses, payments, and legacy imports
+/data/
+/backups/
+/dumps/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.mv.db
+*.trace.db
+*.lock.db
+*.bin
+*.dump
+
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+/secrets/
+/credentials/
+application-local.*
+application-secret.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+service-account*.json
+credentials*.json
+
+# Generated builds, packages, dependencies, logs, and caches
+/target/
+/build/
+/node_modules/
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+*.log
+/logs/
+.pytest_cache/
+.mypy_cache/
+
+# Personal IDE state; shared formatter/task settings are safe to commit
+/.idea/
+*.iml
+/.history/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
+!/.vscode/tasks.json
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
