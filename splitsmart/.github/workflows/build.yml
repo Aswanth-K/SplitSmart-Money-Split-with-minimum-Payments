@@ -1,0 +1,38 @@
+
+name: SplitSmart CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: splitsmart
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: splitsmart/pom.xml
+
+      - name: Build and test
+        run: mvn --batch-mode clean verify
+
+      - name: Upload JAR artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: splitsmart-jar
+          path: splitsmart/target/*.jar
