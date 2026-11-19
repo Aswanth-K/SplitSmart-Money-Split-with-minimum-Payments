@@ -43,7 +43,7 @@ jobs:
           name: splitsmart-jar
           path: splitsmart/target/*.jar
 
-            - name: Inspect OIDC claims
+      - name: Inspect OIDC claims
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
